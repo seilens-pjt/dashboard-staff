@@ -551,7 +551,7 @@ updateTime();
 setInterval(updateTime, 60000);
 
 // ── 비밀번호 ──
-const DASHBOARD_PW = '1209';
+const DASHBOARD_PW = '0000';
 (function() {
   if (sessionStorage.getItem('staff_pw_ok') === '1') {
     document.getElementById('pw-overlay').style.display = 'none';
@@ -900,9 +900,9 @@ function renderPeopleTab(d) {
       const outRate   = t.total > 0 ? Math.round(t.out / t.total * 100) : 0;
       const isDefunct = t.active === 0 && t.out > 0;
       const isWarnOut = !isDefunct && outRate >= 20;
-      if (isDefunct) return `<tr style="background:#f8fafc">${gjCell}<td class="left" style="font-size:13px;font-weight:600;color:#b0b8c8">${team} <span style="font-size:10px;background:#e2e6ed;color:#8a94a6;border-radius:3px;padding:1px 5px;margin-left:4px">운영종료</span></td><td style="color:#b0b8c8">${t.total}</td><td style="color:#b0b8c8">0</td><td style="color:#b0b8c8">${t.out}</td><td style="color:#b0b8c8">${t.future||0}</td></tr>`;
-      if (isWarnOut)  return `<tr style="background:#fefce8">${gjCell}<td class="left" style="font-size:13px;font-weight:600">${team} <span style="font-size:10px;background:#fef9c3;color:#854F0B;border-radius:3px;padding:1px 6px;margin-left:4px">⚠ 퇴사 ${outRate}%</span></td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--red);font-weight:600">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
-      return `<tr>${gjCell}<td class="left" style="font-size:13px;font-weight:600">${team}</td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--text3)">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
+      if (isDefunct) return `<tr style="background:#f8fafc">${gjCell}<td class="left" style="font-size:13px;font-weight:600;color:#b0b8c8;white-space:nowrap">${team} <span style="font-size:10px;background:#e2e6ed;color:#8a94a6;border-radius:3px;padding:1px 5px;margin-left:4px">운영종료</span></td><td style="color:#b0b8c8">${t.total}</td><td style="color:#b0b8c8">0</td><td style="color:#b0b8c8">${t.out}</td><td style="color:#b0b8c8">${t.future||0}</td></tr>`;
+      if (isWarnOut)  return `<tr style="background:#fefce8">${gjCell}<td class="left" style="font-size:13px;font-weight:600;white-space:nowrap">${team} <span style="font-size:10px;background:#fef9c3;color:#854F0B;border-radius:3px;padding:1px 6px;margin-left:4px">⚠ 퇴사 ${outRate}%</span></td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--red);font-weight:600">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
+      return `<tr>${gjCell}<td class="left" style="font-size:13px;font-weight:600;white-space:nowrap">${team}</td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--text3)">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
     });
     staffTbody.innerHTML = rows2.join('') + `<tr class="total-row"><td class="left">합계</td><td></td><td>${tot.total}</td><td>${tot.active}</td><td>${tot.out}</td><td>${tot.future}</td></tr>`;
   }
@@ -965,7 +965,7 @@ function renderPeopleTab(d) {
         const color    = j === '공사관리자' ? 'var(--purple)' : 'var(--teal)';
         return '<td style="font-weight:700;color:' + color + ';cursor:pointer" onclick="openJobTypeDetail(\'' + safeTeam + '\',\'' + safeJob + '\')"><span style="text-decoration:underline">' + cnt + '</span></td>';
       }).join('');
-      return '<tr>' + gjCell + '<td class="left" style="font-size:13px;font-weight:600">' + team + '</td><td style="font-weight:700;background:#f8fafc">' + (rowSum > 0 ? rowSum : '-') + '</td>' + cells + '</tr>';
+      return '<tr>' + gjCell + '<td class="left" style="font-size:13px;font-weight:600;white-space:nowrap">' + team + '</td><td style="font-weight:700;background:#f8fafc">' + (rowSum > 0 ? rowSum : '-') + '</td>' + cells + '</tr>';
     });
     jobtypeBody.innerHTML = rowsJ.join('') +
       '<tr class="total-row"><td class="left">합계</td><td></td><td>' + totJSum + '</td>' +

@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SEILENS 직원 대시보드</title>
+
+<!-- ── PWA 설정 ── -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SEILENS">
+<meta name="theme-color" content="#0f2044">
+<meta name="description" content="평택 P4 Ph2 마감공사 직원 대시보드">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGYyMDQ0Ii8+PHRleHQgeD0iOTAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlM8L3RleHQ+PC9zdmc+">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22SEILENS%20%EC%A7%81%EC%9B%90%22,%22short_name%22:%22SEILENS%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230f2044%22,%22theme_color%22:%22%230f2044%22,%22orientation%22:%22portrait%22,%22icons%22:[{%22src%22:%22data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGYyMDQ0Ii8+PHRleHQgeD0iOTAiIHk9IjExMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjY0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlM8L3RleHQ+PC9zdmc+%22,%22sizes%22:%22180x180%22,%22type%22:%22image/svg+xml%22}]}">
+<style>
+  body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+  .topbar { padding-top: max(0px, env(safe-area-inset-top)); }
+  .sidebar { padding-top: max(0px, env(safe-area-inset-top)); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f2f5;
+  --white: #ffffff;
+  --surface: #ffffff;
+  --border: #e2e6ed;
+  --text: #1a2035;
+  --text2: #5a6478;
+  --text3: #9aa0b0;
+  --navy: #0f2044;
+  --blue: #1a56db;
+  --blue2: #2563eb;
+  --green: #0a8a5a;
+  --green2: #16a34a;
+  --red: #dc2626;
+  --orange: #ea580c;
+  --yellow: #ca8a04;
+  --purple: #7c3aed;
+  --teal: #0d9488;
+  --sidebar-w: 220px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: var(--sidebar-w); background: var(--navy); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 50; overflow-y: auto; }
+.sidebar-logo { padding: 22px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sidebar-logo .co-label { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.sidebar-logo .co-name { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: white; letter-spacing: 3px; line-height: 1; }
+.sidebar-logo .co-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 5px; font-weight: 500; }
+.sidebar-date { padding: 14px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.sidebar-date .sd-date { font-size: 20px; font-weight: 800; color: white; letter-spacing: -0.5px; line-height: 1.1; }
+.sd-weekday { display: inline-block; margin-left: 6px; font-size: 12px; font-weight: 700; color: #ffffff; background: var(--blue2); padding: 2px 8px; border-radius: 20px; vertical-align: middle; }
+.sidebar-date .sd-year { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 3px; font-weight: 400; }
+.sidebar-section-label { padding: 16px 20px 6px; font-size: 10px; color: rgba(255,255,255,0.3); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+.nav-item.active { background: rgba(26,86,219,0.25); border-left-color: var(--blue2); color: white; }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+.sidebar-footer { margin-top: auto; padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 11px; color: rgba(255,255,255,0.25); }
+
+/* ── MAIN ── */
+.main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+.topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
+.topbar-title { font-size: 18px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.topbar-right { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--text2); }
+.update-badge { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--green2); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.content { padding: 24px 28px; flex: 1; }
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── CARDS ── */
+.card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 14px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.card-title .dot { width: 8px; height: 8px; border-radius: 50%; }
+.card-meta { font-size: 12px; color: var(--text3); }
+.card-body { padding: 20px; }
+
+/* ── STAT ROW ── */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+.stat-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; position: relative; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.stat-card.c1::after { background: var(--blue2); }
+.stat-card.c2::after { background: var(--green2); }
+.stat-card.c3::after { background: var(--red); }
+.stat-card.c4::after { background: var(--orange); }
+.stat-label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-num { font-size: 32px; font-weight: 900; color: var(--text); line-height: 1; }
+.stat-num span { font-size: 14px; font-weight: 500; color: var(--text2); margin-left: 4px; }
+.stat-change { font-size: 12px; margin-top: 6px; color: var(--text3); }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th { background: #f8fafc; padding: 10px 14px; text-align: center; font-weight: 700; font-size: 12px; color: var(--text2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.data-table th.left { text-align: left; }
+.data-table td { padding: 10px 14px; text-align: center; border-bottom: 1px solid #f1f5f9; color: var(--text); }
+.data-table td.left { text-align: left; font-weight: 600; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #f8fafc; }
+.data-table .total-row td { background: #f0f7ff; font-weight: 700; color: var(--blue2); }
+
+/* ── BADGE ── */
+.badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-green  { background: #f0fdf4; color: var(--green2); }
+.badge-red    { background: #fef2f2; color: var(--red); }
+.badge-orange { background: #fff7ed; color: var(--orange); }
+.badge-blue   { background: #eff6ff; color: var(--blue2); }
+.badge-gray   { background: #f8fafc; color: var(--text2); }
+
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ── SUBTAB ── */
+.safety-subtab { padding: 8px 16px; border: none; background: none; font-family: 'Noto Sans KR', sans-serif; font-size: 13px; font-weight: 600; color: var(--text3); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; }
+.safety-subtab.active { color: var(--blue2); border-bottom-color: var(--blue2); }
+.safety-subtab:hover { color: var(--text2); }
+
+/* ── CELL COLORS ── */
+.cell-ok { color: var(--green2); font-weight: 600; }
+.cell-warn { color: var(--orange); font-weight: 600; }
+.cell-danger { color: var(--red); font-weight: 600; }
+
+/* ── 햄버거 버튼 ── */
+.hamburger-btn { display: none; align-items: center; justify-content: center; width: 40px; height: 40px; background: none; border: none; cursor: pointer; padding: 0; border-radius: 8px; flex-direction: column; gap: 5px; flex-shrink: 0; }
+.hamburger-btn:hover { background: #f1f5f9; }
+.hamburger-btn .hb-line { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.25s; transform-origin: center; }
+.hamburger-btn.open .hb-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open .hb-line:nth-child(2) { opacity: 0; }
+.hamburger-btn.open .hb-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.sidebar.mobile-open { transform: translateX(0) !important; box-shadow: 4px 0 24px rgba(0,0,0,0.35); }
+#mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 49; }
+#mobile-overlay.show { display: block; }
+
+/* ── MODAL ── */
+@keyframes modalIn { from { opacity:0; transform: scale(0.96) translateY(8px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+  .main { margin-left: 0; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-card { padding: 14px 16px; }
+  .stat-num { font-size: 26px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .content { padding: 12px 14px; }
+  .topbar { padding: 0 14px; }
+  .topbar-title { font-size: 15px; gap: 6px; }
+  .hamburger-btn { display: flex; }
+  .update-badge { display: none; }
+  .card-header { padding: 12px 14px; }
+  .safety-subtab { font-size: 12px !important; padding: 7px 10px !important; }
+}
+
+/* ── ANIMATE ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.section.active > * { animation: fadeUp 0.3s ease both; }
+.section.active > *:nth-child(2) { animation-delay: 0.05s; }
+.section.active > *:nth-child(3) { animation-delay: 0.1s; }
+.section.active > *:nth-child(4) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<!-- 비밀번호 화면 -->
+<div id="pw-overlay" style="position:fixed;inset:0;background:#0f2044;display:flex;align-items:center;justify-content:center;z-index:9999">
+  <div style="background:white;border-radius:16px;padding:40px 48px;width:340px;text-align:center">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:#0f2044;margin-bottom:4px">SEILENS</div>
+    <div style="font-size:13px;color:#9aa0b0;margin-bottom:32px">평택 P4 Ph2 마감공사 직원 대시보드</div>
+    <input type="password" id="pw-input" placeholder="비밀번호를 입력하세요"
+      style="width:100%;padding:12px 16px;border:1px solid #e2e6ed;border-radius:8px;font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box"
+      onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="pw-error" style="font-size:12px;color:#dc2626;margin-bottom:10px;min-height:18px"></div>
+    <button onclick="checkPassword()" style="width:100%;padding:12px;background:#0f2044;color:white;border:none;border-radius:8px;font-size:15px;font-family:'Noto Sans KR',sans-serif;font-weight:600;cursor:pointer">입장</button>
+  </div>
+</div>
+
+<!-- 모바일 오버레이 -->
+<div id="mobile-overlay" onclick="closeMobileMenu()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="co-label">STAFF DASHBOARD</div>
+    <div class="co-name">SEILENS</div>
+    <div class="co-sub">평택 P4 Ph2 마감공사</div>
+  </div>
+  <div class="sidebar-date" id="sidebar-date">
+    <div class="sd-date" id="sd-date-num"></div>
+    <div class="sd-year" id="sd-year"></div>
+  </div>
+  <div class="sidebar-section-label">메뉴</div>
+  <div class="nav-item active" onclick="switchTab('notice', this)">
+    <span class="nav-icon">📢</span> 공지
+  </div>
+  <div class="nav-item" onclick="switchTab('mail', this)">
+    <span class="nav-icon">📬</span> 메일 수신 현황
+  </div>
+  <div class="nav-item" onclick="switchTab('people', this)">
+    <span class="nav-icon">👥</span> 인원현황
+  </div>
+  <div class="sidebar-section-label">검색</div>
+  <div class="nav-item" onclick="switchTab('search', this)">
+    <span class="nav-icon">🔍</span> 직원 검색
+  </div>
+  <div class="sidebar-footer">※ 조회 전용 대시보드</div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()">
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+    </button>
+    <div class="topbar-title">
+      <span class="tab-icon" id="topbar-icon">📢</span>
+      <span id="topbar-title">공지</span>
+    </div>
+    <div class="topbar-right">
+      <span class="update-badge">🟢 실시간 연동</span>
+      <span id="topbar-time"></span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ 공지 ══ -->
+    <div class="section active" id="sec-notice">
+      <div class="grid-2" style="margin-bottom:16px">
+        <!-- 이사님 전달사항 -->
+        <div class="card" style="background:var(--navy);border:none">
+          <div class="card-header" style="border-bottom-color:rgba(255,255,255,0.1)">
+            <div class="card-title">
+              <span style="font-size:11px;font-weight:700;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);border-radius:4px;padding:2px 8px">대표 메시지</span>
+              <span style="color:white;font-size:14px">이사님 전달사항</span>
+            </div>
+            <span id="notice-exec-date" style="font-size:12px;color:rgba(255,255,255,0.35)">-</span>
+          </div>
+          <div class="card-body" style="padding:18px 20px 20px">
+            <div id="notice-exec-msg" style="font-size:16px;font-weight:600;color:white;line-height:1.7;margin-bottom:12px">로딩중...</div>
+            <div id="notice-exec-sub" style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7"></div>
+          </div>
+        </div>
+        <!-- 당월 전달사항 -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><div class="dot" style="background:var(--blue2)"></div>당월 전달사항</div>
+            <span id="notice-monthly-date" style="font-size:12px;color:var(--text3)">-</span>
+          </div>
+          <div class="card-body" id="notice-monthly-list" style="padding:10px 18px">
+            <div style="font-size:14px;color:var(--text3);padding:8px 0">로딩중...</div>
+          </div>
+        </div>
+      </div>
+      <!-- 금일 휴무자 -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-title"><div class="dot" style="background:#639922"></div>금일 부서별 휴무자</div>
+          <span id="notice-absence-date" style="font-size:12px;color:var(--text3)">-</span>
+        </div>
+        <div id="notice-absence-grid" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+          <div style="text-align:center;padding:20px;color:var(--text3);grid-column:span 5;font-size:14px">로딩중...</div>
+        </div>
+      </div>
+      <!-- 토요일 휴무자 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><div class="dot" style="background:#7c3aed"></div>금주 토요일 부서별 휴무자</div>
+          <span id="notice-sat-date" style="font-size:12px;color:var(--text3)">-</span>
+        </div>
+        <div id="notice-sat-grid" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+          <div style="text-align:center;padding:20px;color:var(--text3);grid-column:span 5;font-size:14px">로딩중...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 메일 수신 현황 ══ -->
+    <div class="section" id="sec-mail">
+      <!-- 요약 카드 -->
+      <div class="stat-row" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-card c1">
+          <div class="stat-label">전체 메일</div>
+          <div class="stat-num" id="stat-mail-total">-</div>
+          <div class="stat-change">수신 건수</div>
+        </div>
+        <div class="stat-card c4">
+          <div class="stat-label">기한 임박</div>
+          <div class="stat-num" id="stat-mail-soon">-</div>
+          <div class="stat-change">3일 이내</div>
+        </div>
+        <div class="stat-card c3">
+          <div class="stat-label">기한 초과</div>
+          <div class="stat-num" id="stat-mail-over">-</div>
+          <div class="stat-change">미완료</div>
+        </div>
+        <div class="stat-card c2">
+          <div class="stat-label">완료</div>
+          <div class="stat-num" id="stat-mail-done">-</div>
+          <div class="stat-change">처리 완료</div>
+        </div>
+      </div>
+      <!-- 메일 목록 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><div class="dot" style="background:var(--blue2)"></div>메일 수신 목록</div>
+          <div class="card-meta" id="mail-meta">-</div>
+        </div>
+        <div id="mail-list" style="padding:0">
+          <div style="text-align:center;padding:40px;color:var(--text3);font-size:14px">로딩중...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 인원현황 ══ -->
+    <div class="section" id="sec-people">
+      <!-- 현장/공장 비교 -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;margin-bottom:8px">인원현황</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04)">
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr;border-bottom:1px solid var(--border)">
+            <div style="padding:10px 16px;border-right:1px solid var(--border)"></div>
+            <div style="padding:10px 16px;text-align:center;font-size:12px;font-weight:700;color:#0C447C;background:#E6F1FB;border-right:1px solid var(--border)">현장 인원</div>
+            <div style="padding:10px 16px;text-align:center;font-size:12px;font-weight:700;color:#3B6D11;background:#EAF3DE">공장 인원</div>
+          </div>
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr;border-bottom:1px solid var(--border)">
+            <div style="padding:14px 16px;font-size:20px;font-weight:700;color:var(--text);border-right:1px solid var(--border);display:flex;align-items:center">재직</div>
+            <div style="padding:14px 16px;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:26px;font-weight:700;color:#185FA5;line-height:1" id="ppl-field-active">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+            <div style="padding:14px 16px;text-align:center">
+              <div style="font-size:26px;font-weight:700;color:#3B6D11;line-height:1" id="ppl-factory-active">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr;border-bottom:1px solid var(--border)">
+            <div style="padding:14px 16px;font-size:18px;font-weight:600;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">입사예정</div>
+            <div style="padding:14px 16px;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:22px;font-weight:700;color:#854F0B;line-height:1" id="ppl-field-future">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+            <div style="padding:14px 16px;text-align:center">
+              <div style="font-size:22px;font-weight:700;color:#854F0B;line-height:1" id="ppl-factory-future">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr;border-bottom:1px solid var(--border)">
+            <div style="padding:14px 16px;font-size:18px;font-weight:600;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">총 인원</div>
+            <div style="padding:14px 16px;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:22px;font-weight:700;color:var(--text2);line-height:1" id="ppl-field-total">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+            <div style="padding:14px 16px;text-align:center">
+              <div style="font-size:22px;font-weight:700;color:var(--text2);line-height:1" id="ppl-factory-total">...</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">명</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:100px 1fr 1fr">
+            <div style="padding:14px 16px;font-size:18px;font-weight:600;color:var(--text2);border-right:1px solid var(--border);display:flex;align-items:center">퇴사</div>
+            <div style="padding:14px 16px;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:22px;font-weight:700;color:var(--red);line-height:1" id="ppl-field-out">...</div>
+              <div id="ppl-field-out-rate" style="font-size:11px;color:var(--red);margin-top:4px"></div>
+            </div>
+            <div style="padding:14px 16px;text-align:center">
+              <div style="font-size:22px;font-weight:700;color:var(--red);line-height:1" id="ppl-factory-out">...</div>
+              <div id="ppl-factory-out-rate" style="font-size:11px;color:var(--red);margin-top:4px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 서브탭 -->
+      <div style="display:flex;gap:6px;margin-bottom:16px;border-bottom:2px solid var(--border);padding-bottom:0">
+        <button class="safety-subtab active" onclick="switchPeopleTab('staff',this)">👥 팀별 인원</button>
+        <button class="safety-subtab" onclick="switchPeopleTab('jobtype',this)">🔧 직종현황</button>
+      </div>
+      <!-- 팀별 인원 -->
+      <div id="ppl-sub-staff">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><div class="dot" style="background:var(--blue2)"></div>팀별 인원 현황</div>
+            <div class="card-meta" id="ppl-staff-meta">-</div>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="data-table">
+              <thead><tr>
+                <th class="left">공종</th><th class="left">팀명</th>
+                <th>총 인원</th><th>재직</th><th>퇴사</th><th>입사예정</th>
+              </tr></thead>
+              <tbody id="ppl-staff-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text3)">⏳ 로딩중...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- 직종현황 -->
+      <div id="ppl-sub-jobtype" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><div class="dot" style="background:var(--teal)"></div>팀별 직종 현황 (재직자)</div>
+            <div class="card-meta" id="ppl-jobtype-meta">-</div>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="data-table">
+              <thead><tr id="ppl-jobtype-thead"></tr></thead>
+              <tbody id="ppl-jobtype-tbody">
+                <tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text3)">⏳ 로딩중...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 직원 검색 ══ -->
+    <div class="section" id="sec-search">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-body" style="padding:16px 20px">
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="text" id="search-input" placeholder="이름 또는 소속팀으로 검색..."
+              style="flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none"
+              oninput="renderSearch(this.value)"
+              onkeydown="if(event.key==='Enter') renderSearch(this.value)">
+            <button onclick="renderSearch(document.getElementById('search-input').value)"
+              style="padding:12px 24px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:14px;font-family:'Noto Sans KR',sans-serif;font-weight:600;cursor:pointer;white-space:nowrap">검색</button>
+            <button onclick="document.getElementById('search-input').value='';renderSearch('')"
+              style="padding:12px 16px;background:#f1f5f9;color:var(--text2);border:none;border-radius:8px;font-size:14px;font-family:'Noto Sans KR',sans-serif;cursor:pointer">초기화</button>
+          </div>
+        </div>
+      </div>
+      <div id="search-result">
+        <div style="text-align:center;padding:60px 0;color:var(--text3);font-size:15px">이름 또는 소속팀으로 검색하세요</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ══ 직종현황 상세 모달 ══ -->
+<div id="jobtype-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)" onclick="if(event.target===this)closeJobTypeDetail()">
+  <div style="background:white;border-radius:16px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:modalIn .25s ease">
+    <div style="padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;border-radius:16px 16px 0 0;z-index:1">
+      <div>
+        <div style="font-size:11px;color:var(--text3);font-weight:700;letter-spacing:1px;margin-bottom:3px">직종현황 · 상세보기</div>
+        <div id="jobtype-modal-title" style="font-size:17px;font-weight:800;color:var(--text)"></div>
+        <div id="jobtype-modal-subtitle" style="font-size:12px;color:var(--teal);font-weight:600;margin-top:2px"></div>
+      </div>
+      <button onclick="closeJobTypeDetail()" style="border:none;background:#f1f5f9;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div style="padding:16px 24px" id="jobtype-modal-body"></div>
+  </div>
+</div>
+
+<!-- PWA 설치 토스트 -->
+<div id="pwa-toast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f2044;color:white;border-radius:14px;padding:14px 20px;font-size:13px;font-family:'Noto Sans KR',sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.35);z-index:9998;width:calc(100% - 32px);max-width:360px;animation:fadeUp 0.4s ease">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+    <div>
+      <div style="font-weight:700;margin-bottom:4px">📱 홈 화면에 추가하기</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5" id="pwa-toast-msg"></div>
+    </div>
+    <button onclick="document.getElementById('pwa-toast').style.display='none'" style="background:rgba(255,255,255,0.15);border:none;color:white;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0">닫기</button>
+  </div>
+</div>
+
+<script>
+// ── 탭 정의 ──
+const tabs = {
+  notice: { icon: '📢', title: '공지' },
+  mail:   { icon: '📬', title: '메일 수신 현황' },
+  people: { icon: '👥', title: '인원현황' },
+  search: { icon: '🔍', title: '직원 검색' },
+};
+
+// ── 모바일 메뉴 ──
+function toggleMobileMenu() {
+  const sidebar = document.getElementById('sidebar');
+  const btn     = document.getElementById('hamburger-btn');
+  const overlay = document.getElementById('mobile-overlay');
+  const isOpen  = sidebar.classList.contains('mobile-open');
+  if (isOpen) {
+    sidebar.classList.remove('mobile-open');
+    btn.classList.remove('open');
+    overlay.classList.remove('show');
+  } else {
+    sidebar.classList.add('mobile-open');
+    btn.classList.add('open');
+    overlay.classList.add('show');
+  }
+}
+function closeMobileMenu() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('show');
+}
+
+// ── 탭 전환 ──
+function switchTab(key, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sec-' + key).classList.add('active');
+  document.getElementById('topbar-icon').textContent = tabs[key].icon;
+  document.getElementById('topbar-title').textContent = tabs[key].title;
+  history.replaceState(null, '', '#' + key);
+  closeMobileMenu();
+}
+
+// URL 해시 복원
+(function() {
+  const hash = location.hash.replace('#', '');
+  if (hash && tabs[hash]) {
+    const navEl = document.querySelector(`.nav-item[onclick*="'${hash}'"]`);
+    if (navEl) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      navEl.classList.add('active');
+      document.getElementById('sec-' + hash).classList.add('active');
+      document.getElementById('topbar-icon').textContent = tabs[hash].icon;
+      document.getElementById('topbar-title').textContent = tabs[hash].title;
+    }
+  }
+})();
+
+// ── 인원현황 서브탭 ──
+function switchPeopleTab(key, el) {
+  document.querySelectorAll('#sec-people .safety-subtab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ppl-sub-staff').style.display   = key === 'staff'   ? 'block' : 'none';
+  document.getElementById('ppl-sub-jobtype').style.display = key === 'jobtype' ? 'block' : 'none';
+}
+
+// ── 시각 업데이트 ──
+function updateTime() {
+  const now  = new Date();
+  const hms  = now.toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('topbar-time').textContent = hms + ' 업데이트';
+  const DAYS = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  const dateNumEl = document.getElementById('sd-date-num');
+  const yearEl    = document.getElementById('sd-year');
+  if (dateNumEl) dateNumEl.innerHTML = `${now.getMonth()+1}월 ${now.getDate()}일 <span class="sd-weekday">${DAYS[now.getDay()]}</span>`;
+  if (yearEl)    yearEl.textContent  = `${now.getFullYear()}년`;
+}
+updateTime();
+setInterval(updateTime, 60000);
+
+// ── 비밀번호 ──
+const DASHBOARD_PW = '1209';
+(function() {
+  if (sessionStorage.getItem('staff_pw_ok') === '1') {
+    document.getElementById('pw-overlay').style.display = 'none';
+    return;
+  }
+  document.getElementById('pw-input').focus();
+})();
+function checkPassword() {
+  const input = document.getElementById('pw-input').value.trim();
+  const errEl = document.getElementById('pw-error');
+  if (input === DASHBOARD_PW) {
+    document.getElementById('pw-overlay').style.display = 'none';
+    sessionStorage.setItem('staff_pw_ok', '1');
+  } else {
+    errEl.textContent = '비밀번호가 올바르지 않습니다.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+// ── API ──
+const API_URL = 'https://script.google.com/macros/s/AKfycbxW7xfgf2ZzkLDbyg2rzOMbDdEtHsWI-ZmWOrS3An0o8b-meAafYXQ6Vxaoqgy3gpEFog/exec';
+
+async function loadSheetData() {
+  try {
+    const res  = await fetch(API_URL);
+    if (!res.ok) throw new Error('응답 오류: ' + res.status);
+    const json = await res.json();
+    if (json.status !== 'ok') throw new Error('데이터 오류');
+    const d = json.data;
+
+    renderNoticeTab(d);
+    renderMailTab(d);
+    renderPeopleTab(d);
+    window._STAFF_DATA = d.staff || [];
+
+    const now = new Date();
+    document.getElementById('topbar-time').textContent =
+      now.toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' }) + ' 업데이트';
+  } catch(e) {
+    console.error(e);
+  }
+}
+loadSheetData();
+setInterval(loadSheetData, 5 * 60 * 1000);
+
+// ── 공지 탭 ──
+function renderNoticeTab(d) {
+  const notices  = d.notices  || [];
+  const absences = d.absences || [];
+  const now      = new Date();
+  const DAYS     = ['일','월','화','수','목','금','토'];
+  const todayStr = `${now.getFullYear()}. ${now.getMonth()+1}. ${now.getDate()} (${DAYS[now.getDay()]})`;
+  const monthStr = `${now.getFullYear()}년 ${now.getMonth()+1}월`;
+
+  // 이사님 전달사항
+  const exec = notices.filter(r => String(r['구분']||'').trim() === '이사님')
+    .sort((a,b) => new Date(b['작성일']||0) - new Date(a['작성일']||0))[0];
+  if (exec) {
+    const msgEl  = document.getElementById('notice-exec-msg');
+    const subEl  = document.getElementById('notice-exec-sub');
+    const dateEl = document.getElementById('notice-exec-date');
+    if (msgEl)  msgEl.innerHTML  = String(exec['내용']||'').replace(/\n/g,'<br>');
+    if (subEl)  subEl.innerHTML  = String(exec['상세내용']||'').replace(/\n/g,'<br>');
+    if (dateEl) dateEl.textContent = String(exec['작성일']||'').slice(0,10);
+  } else {
+    const msgEl = document.getElementById('notice-exec-msg');
+    if (msgEl) msgEl.textContent = '등록된 전달사항이 없습니다.';
+  }
+
+  // 당월 전달사항
+  const BADGE_STYLE = {
+    '긴급': 'background:#FCEBEB;color:#A32D2D',
+    '안전': 'background:#E6F1FB;color:#0C447C',
+    '공정': 'background:#f1f5f9;color:#475569',
+    '일정': 'background:#f1f5f9;color:#475569',
+  };
+  const monthlyDateEl = document.getElementById('notice-monthly-date');
+  if (monthlyDateEl) monthlyDateEl.textContent = monthStr;
+  const monthly   = notices.filter(r => String(r['구분']||'').trim() === '당월');
+  const monthlyEl = document.getElementById('notice-monthly-list');
+  if (monthlyEl) {
+    monthlyEl.innerHTML = monthly.length === 0
+      ? '<div style="font-size:14px;color:var(--text3);padding:8px 0">등록된 전달사항이 없습니다.</div>'
+      : monthly.map((r,i) => {
+          const tag   = String(r['태그']||'').trim();
+          const style = BADGE_STYLE[tag] || 'background:#f1f5f9;color:#475569';
+          const badge = tag ? `<span style="display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:6px;${style}">${tag}</span>` : '';
+          return `<div style="display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border);align-items:flex-start">
+            <span style="font-size:12px;font-weight:600;color:var(--text3);background:#f1f5f9;border-radius:20px;padding:2px 8px;flex-shrink:0">${i+1}</span>
+            <div style="font-size:14px;color:var(--text);line-height:1.6;flex:1">${badge}${r['내용']||''}</div>
+          </div>`;
+        }).join('');
+  }
+
+  // 휴무자
+  const absDateEl = document.getElementById('notice-absence-date');
+  if (absDateEl) absDateEl.textContent = todayStr;
+  const todayISO = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const sat = new Date(now);
+  const diffToSat = 6 - now.getDay();
+  sat.setDate(now.getDate() + (now.getDay() === 0 ? 6 : diffToSat === 0 ? 0 : diffToSat));
+  const satISO = `${sat.getFullYear()}-${String(sat.getMonth()+1).padStart(2,'0')}-${String(sat.getDate()).padStart(2,'0')}`;
+  const satStr = `${sat.getFullYear()}. ${sat.getMonth()+1}. ${sat.getDate()} (토)`;
+  const satDateEl = document.getElementById('notice-sat-date');
+  if (satDateEl) satDateEl.textContent = satStr;
+
+  const renderAbsGrid = (gridId, filterISO) => {
+    const filtered  = absences.filter(r => String(r['날짜']||'').trim() === filterISO);
+    const deptOrder = d.dept_order || [];
+    const allDepts  = deptOrder.length > 0
+      ? deptOrder
+      : absences.reduce((acc, r) => {
+          const dept = String(r['부서']||'').trim();
+          if (dept && !acc.includes(dept)) acc.push(dept);
+          return acc;
+        }, []);
+    const deptMap = {};
+    allDepts.forEach(dept => deptMap[dept] = []);
+    filtered.forEach(r => {
+      const dept = String(r['부서']||'').trim();
+      const name = String(r['이름']||'').trim();
+      if (!name || !dept) return;
+      if (!deptMap[dept]) deptMap[dept] = [];
+      deptMap[dept].push(name);
+    });
+    const isMobile = window.innerWidth <= 768;
+    const colCount = isMobile ? 3 : allDepts.length;
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    grid.style.gridTemplateColumns = `repeat(${colCount},minmax(0,1fr))`;
+    grid.innerHTML = allDepts.map((dept, i) => {
+      const people = deptMap[dept] || [];
+      const isLast = (i % colCount) === colCount - 1;
+      return `<div style="border-right:${isLast?'none':'0.5px solid var(--border)'};padding:${isMobile?'10px 8px':'12px 14px'}">
+        <div style="font-size:${isMobile?'11px':'13px'};font-weight:600;color:var(--text2);margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border);word-break:keep-all">${dept} <span style="font-size:10px;font-weight:400;color:var(--text3)">${people.length > 0 ? people.length+'명' : ''}</span></div>
+        ${people.length === 0
+          ? '<div style="font-size:12px;color:var(--text3);text-align:center;margin-top:4px">-</div>'
+          : `<div style="display:flex;flex-direction:column;gap:4px">${
+              people.map(n => `<div style="font-size:${isMobile?'11px':'12px'};font-weight:600;color:#0C447C;background:#E6F1FB;border-radius:20px;padding:4px 6px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${n}</div>`).join('')
+            }</div>`
+        }
+      </div>`;
+    }).join('');
+  };
+  renderAbsGrid('notice-absence-grid', todayISO);
+  renderAbsGrid('notice-sat-grid',     satISO);
+}
+
+// ── 메일 탭 ──
+function renderMailTab(d) {
+  const mails = d.mail || [];
+  const now   = new Date(); now.setHours(0,0,0,0);
+
+  // 기한 파싱 (텍스트에서 날짜 추출)
+  const parseDeadline = (str) => {
+    if (!str) return null;
+    const s = String(str).trim();
+    // yyyy-mm-dd 형식
+    const m1 = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m1) return new Date(parseInt(m1[1]), parseInt(m1[2])-1, parseInt(m1[3]));
+    // m/d 또는 mm/dd 형식
+    const m2 = s.match(/(\d{1,2})\/(\d{1,2})/);
+    if (m2) {
+      const d2 = new Date(now.getFullYear(), parseInt(m2[1])-1, parseInt(m2[2]));
+      return d2;
+    }
+    // "3/23 16시까지" 같은 형식
+    const m3 = s.match(/(\d{1,2})월?\s*(\d{1,2})/);
+    if (m3) return new Date(now.getFullYear(), parseInt(m3[1])-1, parseInt(m3[2]));
+    return null;
+  };
+
+  const getStatus = (row) => {
+    const done = row['완료'];
+    if (done === true || String(done).trim() === 'TRUE' || String(done).trim() === '완료') return 'done';
+    const dl = parseDeadline(row['기한']);
+    if (!dl) return 'normal';
+    const diff = Math.floor((dl - now) / (1000*60*60*24));
+    if (diff < 0)  return 'over';
+    if (diff <= 3) return 'soon';
+    return 'normal';
+  };
+
+  const total = mails.length;
+  const soon  = mails.filter(r => getStatus(r) === 'soon').length;
+  const over  = mails.filter(r => getStatus(r) === 'over').length;
+  const done  = mails.filter(r => getStatus(r) === 'done').length;
+
+  const setEl = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = val + '<span style="font-size:14px;font-weight:500;color:var(--text2);margin-left:2px">건</span>';
+  };
+  setEl('stat-mail-total', total);
+  setEl('stat-mail-soon',  soon);
+  setEl('stat-mail-over',  over);
+  setEl('stat-mail-done',  done);
+
+  const metaEl = document.getElementById('mail-meta');
+  if (metaEl) metaEl.textContent = `총 ${total}건`;
+
+  const listEl = document.getElementById('mail-list');
+  if (!listEl) return;
+
+  if (mails.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3);font-size:14px">등록된 메일이 없습니다.</div>';
+    return;
+  }
+
+  // 완료된 건 맨 아래로 정렬
+  const sorted = [...mails].sort((a, b) => {
+    const sa = getStatus(a) === 'done' ? 1 : 0;
+    const sb = getStatus(b) === 'done' ? 1 : 0;
+    return sa - sb;
+  });
+
+  const statusConfig = {
+    done:   { label: '완료',     bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
+    over:   { label: '기한 초과', bg: '#fef2f2', color: '#dc2626', border: '#fecaca' },
+    soon:   { label: '임박',     bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
+    normal: { label: '',         bg: 'white',   color: '',        border: '' },
+  };
+
+  listEl.innerHTML = sorted.map((r, i) => {
+    const status  = getStatus(r);
+    const cfg     = statusConfig[status];
+    const isDone  = status === 'done';
+    const opacity = isDone ? 'opacity:0.4;' : '';
+    const sender  = String(r['발신자'] || '-').trim();
+    const due    = String(r['기한']   || '-').trim();
+    const title  = String(r['제목']   || '-').trim();
+    const body   = String(r['내용']   || '').trim();
+    const isLast = i === mails.length - 1;
+
+    // 날짜 표시용 포맷 (M/D)
+    const dl      = parseDeadline(r['기한']);
+    const dateStr = dl ? `${dl.getMonth()+1}/${dl.getDate()}` : due;
+    const diff    = dl ? Math.floor((dl - now) / (1000*60*60*24)) : null;
+
+    let badgeHtml = '';
+    if (status === 'done') {
+      badgeHtml = `<span style="font-size:11px;font-weight:600;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};border-radius:20px;padding:2px 10px;white-space:nowrap">✓ 완료</span>`;
+    } else if (status === 'over') {
+      badgeHtml = `<span style="font-size:11px;font-weight:600;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};border-radius:20px;padding:2px 10px;white-space:nowrap">기한 초과 (${dateStr})</span>`;
+    } else if (status === 'soon') {
+      const dLabel = diff === 0 ? 'D-Day' : `D-${diff}`;
+      badgeHtml = `<span style="font-size:11px;font-weight:600;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};border-radius:20px;padding:2px 10px;white-space:nowrap">임박 ${dLabel} (${dateStr})</span>`;
+    } else {
+      badgeHtml = `<span style="font-size:11px;font-weight:600;background:#f8fafc;color:var(--text3);border:1px solid var(--border);border-radius:20px;padding:2px 10px;white-space:nowrap">${dateStr}까지</span>`;
+    }
+
+    return `<div style="padding:16px 20px;border-bottom:${isLast?'none':'0.5px solid var(--border)'};${opacity}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:var(--text)">${sender}</span>
+        ${badgeHtml}
+      </div>
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">${title}</div>
+      ${body ? `<div style="font-size:12px;color:var(--text2);line-height:1.5">${body}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ── 인원현황 탭 ──
+function renderPeopleTab(d) {
+  const rows = d.management || [];
+  if (rows.length === 0) return;
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const parseDate = (str) => {
+    if (!str || str === '') return null;
+    const dt = new Date(str);
+    if (isNaN(dt)) return null;
+    dt.setHours(0,0,0,0);
+    return dt;
+  };
+  const isActive = (r) => { const inD = parseDate(r.inDate); const outD = parseDate(r.outDate); return inD && inD <= today && !outD; };
+  const isOut    = (r) => r.outDate && r.outDate !== '';
+  const isFuture = (r) => { const inD = parseDate(r.inDate); return inD && inD > today; };
+
+  const fieldRows   = rows.filter(r => !(r.gongjong||'').includes('공장'));
+  const factoryRows = rows.filter(r =>  (r.gongjong||'').includes('공장'));
+
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setEl('ppl-field-active',   fieldRows.filter(isActive).length);
+  setEl('ppl-field-future',   fieldRows.filter(isFuture).length);
+  setEl('ppl-field-total',    fieldRows.length);
+  setEl('ppl-factory-active', factoryRows.filter(isActive).length);
+  setEl('ppl-factory-future', factoryRows.filter(isFuture).length);
+  setEl('ppl-factory-total',  factoryRows.length);
+
+  const fieldOut   = fieldRows.filter(isOut).length;
+  const factoryOut = factoryRows.filter(isOut).length;
+  setEl('ppl-field-out',   fieldOut);
+  setEl('ppl-factory-out', factoryOut);
+
+  const setOutRate = (rateId, out, total) => {
+    const el = document.getElementById(rateId);
+    if (!el) return;
+    const rate = total > 0 ? Math.round(out / total * 100) : 0;
+    el.innerHTML = `<div style="display:flex;align-items:center;gap:5px;justify-content:center;margin-top:2px">
+      <div style="width:60px;height:3px;background:#fecaca;border-radius:2px;overflow:hidden">
+        <div style="width:${rate}%;height:100%;background:var(--red);border-radius:2px"></div>
+      </div>
+      <span>${rate}%</span>
+    </div>`;
+  };
+  setOutRate('ppl-field-out-rate',   fieldOut,   fieldRows.length);
+  setOutRate('ppl-factory-out-rate', factoryOut, factoryRows.length);
+
+  const now     = new Date();
+  const metaStr = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 기준`;
+  ['ppl-staff-meta','ppl-jobtype-meta'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = metaStr; });
+
+  const GONGJONG_ORDER = ['모듈','PCW','일반배관','일반배관/폐수','폐수','덕트','보온','양중'];
+  const getOrder = (gj) => { const idx = GONGJONG_ORDER.findIndex(g => (gj||'').includes(g)); return idx === -1 ? 99 : idx; };
+
+  const teamMap = {};
+  rows.forEach(r => {
+    const team = r.team; if (!team) return;
+    if (!teamMap[team]) teamMap[team] = { gongjong: r.gongjong, total:0, active:0, out:0, future:0 };
+    const t = teamMap[team];
+    t.total++;
+    if (isActive(r)) t.active++;
+    if (isOut(r))    t.out++;
+    if (isFuture(r)) t.future++;
+  });
+
+  const sortedTeams = Object.keys(teamMap).sort((a, b) => {
+    const oa = getOrder(teamMap[a].gongjong), ob = getOrder(teamMap[b].gongjong);
+    return oa !== ob ? oa - ob : a.localeCompare(b, 'ko');
+  });
+
+  // 팀별 인원 표
+  const staffTbody = document.getElementById('ppl-staff-tbody');
+  if (staffTbody) {
+    let prevGj = '';
+    let tot = { total:0, active:0, out:0, future:0 };
+    const rows2 = sortedTeams.map(team => {
+      const t  = teamMap[team];
+      const gj = t.gongjong || '-';
+      const gjCell = gj !== prevGj
+        ? `<td class="left" style="font-size:12px;color:var(--text2);font-weight:600">${gj}</td>`
+        : `<td class="left"></td>`;
+      prevGj = gj;
+      tot.total += t.total; tot.active += t.active; tot.out += t.out; tot.future += (t.future||0);
+      const outRate   = t.total > 0 ? Math.round(t.out / t.total * 100) : 0;
+      const isDefunct = t.active === 0 && t.out > 0;
+      const isWarnOut = !isDefunct && outRate >= 20;
+      if (isDefunct) return `<tr style="background:#f8fafc">${gjCell}<td class="left" style="font-size:13px;font-weight:600;color:#b0b8c8">${team} <span style="font-size:10px;background:#e2e6ed;color:#8a94a6;border-radius:3px;padding:1px 5px;margin-left:4px">운영종료</span></td><td style="color:#b0b8c8">${t.total}</td><td style="color:#b0b8c8">0</td><td style="color:#b0b8c8">${t.out}</td><td style="color:#b0b8c8">${t.future||0}</td></tr>`;
+      if (isWarnOut)  return `<tr style="background:#fefce8">${gjCell}<td class="left" style="font-size:13px;font-weight:600">${team} <span style="font-size:10px;background:#fef9c3;color:#854F0B;border-radius:3px;padding:1px 6px;margin-left:4px">⚠ 퇴사 ${outRate}%</span></td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--red);font-weight:600">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
+      return `<tr>${gjCell}<td class="left" style="font-size:13px;font-weight:600">${team}</td><td style="font-weight:600">${t.total}</td><td style="color:var(--green2);font-weight:600">${t.active}</td><td style="color:var(--text3)">${t.out}</td><td style="color:var(--blue2)">${t.future||0}</td></tr>`;
+    });
+    staffTbody.innerHTML = rows2.join('') + `<tr class="total-row"><td class="left">합계</td><td></td><td>${tot.total}</td><td>${tot.active}</td><td>${tot.out}</td><td>${tot.future}</td></tr>`;
+  }
+
+  // 직종현황 표
+  const JOB_ORDER  = ['공사관리자','배관공','용접공','철골공','보온공','덕트공','PVC용접공'];
+  const activeRows = rows.filter(r => isActive(r));
+  const getJobType = r => (r.jobtype || r.jobType || r['직종'] || '').toString().trim() || '';
+  const getName    = r => (r.name  || r['이름']  || r['성명']  || '').toString().trim() || '-';
+  const getPhone   = r => (r.phone || r['연락처'] || r['휴대폰'] || '').toString().trim() || '-';
+
+  const allJobTypes = [...new Set(activeRows.map(getJobType).filter(j => j))];
+  allJobTypes.sort((a, b) => {
+    const ia = JOB_ORDER.indexOf(a) !== -1 ? JOB_ORDER.indexOf(a) : JOB_ORDER.findIndex(j => a.includes(j));
+    const ib = JOB_ORDER.indexOf(b) !== -1 ? JOB_ORDER.indexOf(b) : JOB_ORDER.findIndex(j => b.includes(j));
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a.localeCompare(b, 'ko');
+  });
+
+  const jobMatrix = {};
+  sortedTeams.forEach(team => { jobMatrix[team] = {}; allJobTypes.forEach(j => { jobMatrix[team][j] = []; }); });
+  activeRows.forEach(r => {
+    const team = (r.team || '').trim();
+    if (!team || !jobMatrix[team]) return;
+    const jt = getJobType(r); if (!jt) return;
+    if (!jobMatrix[team][jt]) jobMatrix[team][jt] = [];
+    jobMatrix[team][jt].push({ name: getName(r), phone: getPhone(r) });
+  });
+  window._jobMatrix   = jobMatrix;
+  window._allJobTypes = allJobTypes;
+
+  const jobtypeHead = document.getElementById('ppl-jobtype-thead');
+  if (jobtypeHead) {
+    jobtypeHead.innerHTML =
+      '<th class="left" style="white-space:nowrap">공종</th>' +
+      '<th class="left" style="white-space:nowrap">팀명</th>' +
+      '<th style="background:#f1f5f9;white-space:nowrap">합계</th>' +
+      allJobTypes.map(j => '<th style="white-space:nowrap">' + j + '</th>').join('');
+  }
+
+  const jobtypeBody = document.getElementById('ppl-jobtype-tbody');
+  if (jobtypeBody) {
+    let prevGjJ = '';
+    const totJ = {}; allJobTypes.forEach(j => totJ[j] = 0); let totJSum = 0;
+    const rowsJ = sortedTeams.map(team => {
+      const t  = teamMap[team];
+      const gj = t.gongjong || '-';
+      const gjCell = gj !== prevGjJ
+        ? '<td class="left" style="font-size:12px;color:var(--text2);font-weight:600">' + gj + '</td>'
+        : '<td class="left"></td>';
+      prevGjJ = gj;
+      const rowSum = allJobTypes.reduce((s,j) => s + (jobMatrix[team][j]||[]).length, 0);
+      totJSum += rowSum;
+      const cells = allJobTypes.map(j => {
+        const people = jobMatrix[team][j] || [];
+        const cnt    = people.length;
+        totJ[j]     += cnt;
+        if (cnt === 0) return '<td style="color:#cbd5e1">-</td>';
+        const safeTeam = team.replace(/'/g, "\\'");
+        const safeJob  = j.replace(/'/g, "\\'");
+        const color    = j === '공사관리자' ? 'var(--purple)' : 'var(--teal)';
+        return '<td style="font-weight:700;color:' + color + ';cursor:pointer" onclick="openJobTypeDetail(\'' + safeTeam + '\',\'' + safeJob + '\')"><span style="text-decoration:underline">' + cnt + '</span></td>';
+      }).join('');
+      return '<tr>' + gjCell + '<td class="left" style="font-size:13px;font-weight:600">' + team + '</td><td style="font-weight:700;background:#f8fafc">' + (rowSum > 0 ? rowSum : '-') + '</td>' + cells + '</tr>';
+    });
+    jobtypeBody.innerHTML = rowsJ.join('') +
+      '<tr class="total-row"><td class="left">합계</td><td></td><td>' + totJSum + '</td>' +
+      allJobTypes.map(j => '<td>' + (totJ[j] > 0 ? totJ[j] : '-') + '</td>').join('') + '</tr>';
+  }
+}
+
+// ── 직종 상세 모달 ──
+function openJobTypeDetail(team, jobType) {
+  const matrix = window._jobMatrix || {};
+  const people = (matrix[team] && matrix[team][jobType]) || [];
+  document.getElementById('jobtype-modal-title').textContent    = team + ' · ' + jobType;
+  document.getElementById('jobtype-modal-subtitle').textContent = '재직자 총 ' + people.length + '명';
+  const body = document.getElementById('jobtype-modal-body');
+  if (people.length === 0) {
+    body.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text3);font-size:13px">해당 인원 없음</div>';
+  } else {
+    body.innerHTML = people.map((p, i) =>
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:' + (i < people.length-1 ? '1px solid var(--border)' : 'none') + '">' +
+        '<div style="display:flex;align-items:center;gap:12px">' +
+          '<div style="width:36px;height:36px;border-radius:50%;background:var(--teal);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+            (p.name !== '-' ? p.name.charAt(0) : '?') +
+          '</div>' +
+          '<div><div style="font-size:14px;font-weight:700;color:var(--text)">' + p.name + '</div><div style="font-size:11px;color:var(--text3);margin-top:2px">' + jobType + '</div></div>' +
+        '</div>' +
+        '<a href="tel:' + p.phone + '" style="font-size:13px;font-weight:600;color:var(--blue2);text-decoration:none">' + p.phone + '</a>' +
+      '</div>'
+    ).join('');
+  }
+  document.getElementById('jobtype-overlay').style.display = 'flex';
+}
+function closeJobTypeDetail() {
+  document.getElementById('jobtype-overlay').style.display = 'none';
+}
+
+// ── 직원 검색 ──
+function renderSearch(keyword) {
+  const resultEl = document.getElementById('search-result');
+  if (!resultEl) return;
+  const staff = window._STAFF_DATA || [];
+  const kw    = (keyword || '').trim();
+  if (!kw) {
+    resultEl.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text3);font-size:15px">이름 또는 소속팀으로 검색하세요</div>';
+    return;
+  }
+  if (staff.length === 0) {
+    resultEl.innerHTML = '<div style="text-align:center;padding:60px 0;color:var(--text3);font-size:15px">데이터 로딩 중입니다. 잠시 후 다시 검색해주세요.</div>';
+    return;
+  }
+  const matched = staff.filter(r =>
+    String(r['성명']||'').includes(kw) || String(r['소속팀']||'').includes(kw)
+  );
+  if (matched.length === 0) {
+    resultEl.innerHTML = `<div style="text-align:center;padding:60px 0;color:var(--text3);font-size:15px">"${kw}" 검색 결과가 없습니다</div>`;
+    return;
+  }
+  resultEl.innerHTML = `
+    <div style="font-size:13px;color:var(--text3);margin-bottom:12px">"${kw}" 검색 결과 ${matched.length}명</div>
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead>
+          <tr style="background:#f8fafc;border-bottom:1px solid var(--border)">
+            <th style="padding:11px 16px;text-align:left;font-weight:600;color:var(--text2);font-size:13px">성명</th>
+            <th style="padding:11px 16px;text-align:left;font-weight:600;color:var(--text2);font-size:13px">소속팀</th>
+            <th style="padding:11px 16px;text-align:left;font-weight:600;color:var(--text2);font-size:13px">직급</th>
+            <th style="padding:11px 16px;text-align:left;font-weight:600;color:var(--text2);font-size:13px">연락처</th>
+            <th style="padding:11px 16px;text-align:left;font-weight:600;color:var(--text2);font-size:13px">업무</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${matched.map((r, i) => {
+            const name  = String(r['성명']  ||'-');
+            const team  = String(r['소속팀'] ||'-');
+            const rank  = String(r['직급']  ||'-');
+            const phone = String(r['휴대폰'] ||'-');
+            const work  = String(r['업무']  ||'');
+            const bg    = i % 2 === 0 ? 'white' : '#fafbfc';
+            const phoneCell = phone !== '-'
+              ? `<td style="padding:11px 16px"><a href="tel:${phone}" style="font-weight:600;color:var(--blue2);text-decoration:none">${phone}</a></td>`
+              : `<td style="padding:11px 16px;color:var(--text3)">-</td>`;
+            return `<tr style="background:${bg};border-bottom:0.5px solid var(--border)">
+              <td style="padding:11px 16px;font-weight:600;color:var(--text)">${name}</td>
+              <td style="padding:11px 16px;color:var(--text2)">${team}</td>
+              <td style="padding:11px 16px;color:var(--text2)">${rank}</td>
+              ${phoneCell}
+              <td style="padding:11px 16px;color:var(--text3)">${work}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+// ── PWA 설치 안내 ──
+(function() {
+  if (window.matchMedia('(display-mode: standalone)').matches) return;
+  if (window.navigator.standalone) return;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (!isMobile) return;
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const msg   = isIOS
+    ? "아래 공유버튼(□↑) → '홈 화면에 추가'를 누르면 앱처럼 사용할 수 있어요!"
+    : "브라우저 메뉴(⋮) → '홈 화면에 추가'를 누르면 앱처럼 사용할 수 있어요!";
+  setTimeout(() => {
+    const toast = document.getElementById('pwa-toast');
+    const msgEl = document.getElementById('pwa-toast-msg');
+    if (toast && msgEl) {
+      msgEl.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 8000);
+    }
+  }, 3000);
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    const toast = document.getElementById('pwa-toast');
+    const msgEl = document.getElementById('pwa-toast-msg');
+    if (toast && msgEl) {
+      msgEl.textContent = '아래 버튼을 눌러 앱으로 설치할 수 있어요!';
+      toast.style.display = 'block';
+      const btn = document.createElement('button');
+      btn.textContent = '설치';
+      btn.style.cssText = 'background:#1a56db;border:none;color:white;border-radius:8px;padding:4px 12px;font-size:12px;cursor:pointer;margin-top:8px;font-family:inherit;font-weight:600';
+      btn.onclick = () => { e.prompt(); toast.style.display = 'none'; };
+      msgEl.after(btn);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

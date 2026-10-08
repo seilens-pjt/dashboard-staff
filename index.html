@@ -232,7 +232,34 @@ async function load(){
     render();
   }catch(err){$('main').innerHTML='<div class="empty">불러오기 실패: '+esc(err.message||err)+'</div>'}
 }
-load();
+const PW_HASH='';
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sched|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function gate(title,onSubmit){
+  document.head.insertAdjacentHTML('beforeend','<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">');
+  document.body.insertAdjacentHTML('beforeend',`<div id="gt" style="position:fixed;inset:0;z-index:99;background:#0e1f44;display:flex;align-items:center;justify-content:center;padding:20px">
+<div style="background:#fff;border-radius:22px;padding:38px 30px 30px;width:100%;max-width:340px;text-align:center;box-shadow:0 10px 40px #0006">
+<div style="font-family:'Bebas Neue',Impact,sans-serif;font-size:34px;letter-spacing:6px;color:#0e1f44;line-height:1">SEILENS</div>
+<div style="font-size:12px;color:#9aa3b5;margin:10px 0 28px">${title}</div>
+<input id="gp" type="password" autocomplete="current-password" style="width:100%;padding:15px 14px;border:1px solid #d6e0f5;border-radius:10px;font:inherit;font-size:16px;background:#e8effc;color:#0e1f44;outline:none">
+<button id="gb" style="width:100%;margin-top:22px;padding:15px;border:0;border-radius:10px;background:#0e1f44;color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer">입장</button>
+<div id="ge" style="color:#dc2626;font-size:13px;margin-top:12px;min-height:18px;word-break:break-all;user-select:all"></div>
+</div></div>`);
+  const go=async()=>{const v=$('gp').value;if(v)await onSubmit(v)};
+  $('gb').onclick=go;$('gp').onkeydown=e=>{if(e.key==='Enter')go()};$('gp').focus();
+}
+(async()=>{
+  let ok=false;
+  try{ok=!!PW_HASH&&localStorage.getItem('pwok')===PW_HASH}catch(e){}
+  if(ok){load();return}
+  if(!PW_HASH){
+    gate('[설정 모드] 비밀번호를 입력하면 아래에 긴 문자열이 나와요',async v=>{$('ge').style.color='#0e1f44';$('ge').textContent=await sha(v)});
+    return;
+  }
+  gate('평택 P4 Ph2 시운전 일정',async v=>{
+    if(await sha(v)===PW_HASH){try{localStorage.setItem('pwok',PW_HASH)}catch(e){}$('gt').remove();load()}
+    else{$('ge').textContent='비밀번호가 맞지 않아요';$('gp').value=''}
+  });
+})();
 </script>
 </body>
 </html>

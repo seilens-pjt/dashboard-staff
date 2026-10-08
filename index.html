@@ -232,7 +232,7 @@ async function load(){
     render();
   }catch(err){$('main').innerHTML='<div class="empty">불러오기 실패: '+esc(err.message||err)+'</div>'}
 }
-const PW_HASH='';
+const PW_HASH='688363d69d1ba3076fb14a7c8833e4da3e6507236783777bf64368856b7df884';
 async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('sched|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 function gate(title,onSubmit){
   document.head.insertAdjacentHTML('beforeend','<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">');
